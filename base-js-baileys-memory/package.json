@@ -1,0 +1,28 @@
+{
+  "name": "base-js-baileys-memory",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/app.js",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint . --no-ignore",
+    "dev": "npm run lint && nodemon ./src/app.js",
+    "start": "node ./src/app.js"
+  },
+  "keywords": [],
+  "dependencies": {
+    "@builderbot/bot": "latest",
+    "@builderbot/provider-baileys": "latest",
+    "dotenv": "^17.1.0",
+    "mysql2": "^3.14.1",
+    "openai": "latest",
+    "tesseract.js": "^6.0.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0",
+    "eslint-plugin-builderbot": "latest",
+    "nodemon": "^3.1.0"
+  },
+  "author": "",
+  "license": "ISC"
+}

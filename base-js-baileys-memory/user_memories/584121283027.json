@@ -1,0 +1,26 @@
+[
+    {
+        "role": "user",
+        "content": "Cómo me llamo ?"
+    },
+    {
+        "role": "assistant",
+        "content": "¡Por supuesto, José! 🌟 No olvido los detalles importantes, y tu nombre es uno de ellos.  \n\n¿Listo para llevar el elegante **Channel** por solo **$50 USD (7.000 Bs)**? 😍  \n\n💬 *\"Un perfume clásico para un nombre memorable\"*  \n\n¡Dime si deseas finalizar la compra o prefieres que te recomiende algo más! ✨"
+    },
+    {
+        "role": "user",
+        "content": "Quiero finalizar la compra"
+    },
+    {
+        "role": "assistant",
+        "content": "¡Fantástico, José! 🌟 Estás a un paso de tener tu elegante **Channel** en casa.  \n\n🛒 **Resumen de tu compra:**  \n- **Perfume:** Channel  \n- **Precio:** $50 USD (7.000 Bs)  \n- **Envío:** ¡Gratis! 🎉  \n\n📝 **Para finalizar:**  \n1️⃣ Confirma tu dirección de envío (por mensaje privado o aquí).  \n2️⃣ Elige tu método de pago:  \n   - 💵 Transferencia en USD (damos datos bancarios).  \n   - 💲 Pago en bolívares (equivalente a 7.000 Bs).  \n\n¿Listo para confirmar? ¡Tu perfume estará en camino hoy mismo! 🚀💨  \n\n(*Puedes escribir \"Confirmo\" o preguntarme cualquier duda* 😊)."
+    },
+    {
+        "role": "user",
+        "content": "Confirmo"
+    },
+    {
+        "role": "assistant",
+        "content": "¡Excelente, José! 🎉✨ Tu **Channel** ya está reservado y listo para enviarse.  \n\n📦 **Próximos pasos:**  \n1️⃣ Te enviaré por *mensaje privado* los datos bancarios (para transferencia en USD o Bs).  \n2️⃣ Una vez confirmado el pago, recibirás tu perfume en **24-48 horas** (¡con tracking incluido!).  \n\n💌 *\"José, tu elegancia huele a Channel... ¡y llegará pronto!\"*  \n\n¿Algo más en lo que pueda ayudarte? 😊 Si no, ¡muchas gracias por tu compra! Esperamos verte de nuevo. 🌹  \n\n(*Cualquier duda, aquí estoy* 💬)."
+    }
+]
