@@ -6,10 +6,12 @@ import paymentFlow from './payment.flow.js';
 const salesFlow = addKeyword(['recargas', 'recargar'])
     .addAnswer(
         [
-            "Estos son nuestros servicios ",
+            "Estos son nuestros servicios 🚀",
             "1. Call of Duty",
             "2. FreeFire",
             "3. Blood Strike",
+            "",
+            "Indicanos en el chat, cual juego deseas recargar! ❇️",
         ], 
         { capture: true }, 
         async (ctx, { gotoFlow, fallBack }) => {
