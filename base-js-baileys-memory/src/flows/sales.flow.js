@@ -3,9 +3,14 @@ import { getResponse } from '../services/ai.service.js';
 import { PROMPT_SALES } from '../prompts/prompts.js';
 import paymentFlow from './payment.flow.js';
 
-const salesFlow = addKeyword(['comprar', 'recargas', 'free', 'fire', 'cod', 'roblox'])
+const salesFlow = addKeyword(['recargas', 'recargar'])
     .addAnswer(
-        'Claro, te ayudaré con tu compra. ¿Qué perfume estás buscando?', 
+        [
+            "Estos son nuestros servicios ",
+            "1. Call of Duty",
+            "2. FreeFire",
+            "3. Blood Strike",
+        ], 
         { capture: true }, 
         async (ctx, { gotoFlow, fallBack }) => {
             const userId = ctx.from;
