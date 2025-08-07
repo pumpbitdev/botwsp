@@ -5,21 +5,25 @@
  */
 const PRODUCTS = {
     "Free Fire": [
-        { id: "ff_100", name: "100 Diamantes", price: 1.00 },
-        { id: "ff_310", name: "310 Diamantes", price: 3.00 },
-        { id: "ff_520", name: "520 Diamantes", price: 5.00 },
-        { id: "ff_1060", name: "1060 Diamantes", price: 10.00 },
+        { id: "ff_100", name: "100 Diamantes", price: 1.36 },
+        { id: "ff_310", name: "310 Diamantes", price: 4.08 },
+        { id: "ff_520", name: "520 Diamantes", price: 6.84 },
+        { id: "ff_1060", name: "1060 Diamantes", price: 13.66 },
+        { id: "ff_2180", name: "2180 Diamantes", price: 27.21 },
     ],
     "Call of Duty": [
-        { id: "cod_80", name: "80 CP", price: 1.00 },
-        { id: "cod_420", name: "420 CP", price: 5.00 },
-        { id: "cod_880", name: "880 CP", price: 10.00 },
-        { id: "cod_2400", name: "2400 CP", price: 25.00 },
+        { id: "cod_30", name: "30 CP", price: 0.70 },
+        { id: "cod_80", name: "80 CP", price: 1.38 },
+        { id: "cod_460", name: "460 CP", price: 5.58 },
+        { id: "cod_960", name: "960 CP", price: 10.38 },
+        { id: "cod_2600", name: "2600 CP", price: 25.98 },
     ],
     "Blood Strike": [
-         { id: "bs_100", name: "100 Monedas de Oro", price: 1.00 },
-         { id: "bs_500", name: "500 Monedas de Oro", price: 5.00 },
-         { id: "bs_1000", name: "1000 Monedas de Oro", price: 10.00 },
+         { id: "bs_50", name: "50 Gold", price: 0.70 },
+         { id: "bs_100", name: "100 Gold", price: 1.38 },
+         { id: "bs_300", name: "200 Gold", price: 4.18 },
+         { id: "bs_500", name: "500 Gold", price: 6.95 },
+         { id: "bs_1000", name: "1000 Gold", price: 12.98 },
     ]
 };
 

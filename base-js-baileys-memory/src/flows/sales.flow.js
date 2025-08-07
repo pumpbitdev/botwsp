@@ -3,7 +3,7 @@ import { getResponse } from '../services/ai.service.js';
 import { PROMPT_SALES } from '../prompts/prompts.js';
 import paymentFlow from './payment.flow.js';
 
-const salesFlow = addKeyword(['comprar', 'catalogo'])
+const salesFlow = addKeyword(['comprar', 'recargas', 'free', 'fire', 'cod', 'roblox'])
     .addAnswer(
         'Claro, te ayudaré con tu compra. ¿Qué perfume estás buscando?', 
         { capture: true }, 
