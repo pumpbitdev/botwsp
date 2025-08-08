@@ -33,7 +33,7 @@ function formatProductsForPrompt(products) {
  * @returns {Promise<string>} - La respuesta generada por la IA.
  */
 async function getResponse(promptTemplate, userId, userMessage) {
-    if (userMessage.trim().toLowerCase() === "confirmo") {
+    if (userMessage.trim().toLowerCase() === "confirmo" || userMessage.trim().toLowerCase() === "confirmar") {
         console.log("[AI Service] Mensaje exacto 'recargas', redirigiendo al menú");
         return "confirmo";
     }
