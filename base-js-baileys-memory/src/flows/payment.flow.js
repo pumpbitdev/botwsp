@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 
 const MEDIA_PATH = path.join(process.cwd(), 'media');
+const pool = mysql.createPool(dbConfig);
 
 if (!fs.existsSync(MEDIA_PATH)) {
     fs.mkdirSync(MEDIA_PATH, { recursive: true });

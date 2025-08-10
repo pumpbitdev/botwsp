@@ -24,6 +24,12 @@ const PRODUCTS = {
          { id: "bs_300", name: "200 Gold", price: 4.18 },
          { id: "bs_500", name: "500 Gold", price: 6.95 },
          { id: "bs_1000", name: "1000 Gold", price: 12.98 },
+    ],
+    "Zinli": [
+        { id: "zl_1", name: "1$", price: 1.70 },
+        { id: "zl_5", name: "5$", price: 6.00 },
+        { id: "zl_10", name: "10$", price: 11.5 },
+        { id: "zl_1", name: "20$", price: 22.70 },
     ]
 };
 

@@ -6,7 +6,7 @@ import { salesFlow } from './sales.flow.js';
 
 
 const mainFlow = addKeyword(['hola', 'buenas', 'hi', 'hello'])
-    .addAnswer(["Hola, bienvenido a Confiao tu sitio de recargas! 💸"])
+    .addAnswer(["Hola, bienvenido a Bityete tu sitio de recargas! 💸"])
     .addAnswer([
         "Como puedes iniciar a recargar tus Juegos?",
         '1. 👉 Puedes escribir "taza" para saber la taza con la que trabajamos!',
