@@ -6,13 +6,15 @@ import mainFlow from './flows/main.flow.js'
 import { salesFlow, pricesFlow } from './flows/sales.flow.js'
 import paymentFlow from './flows/payment.flow.js'
 import gamesFlow from './flows/catalogo.flow.js'
+import gamePaymentFlow from './flows/payment/gamePayment.flow.js';
+import zinliPaymentFlow from './flows/payment/ExchangePayment.flow.js';
 
 const PORT = process.env.PORT ?? 3002
 
 const main = async () => {
     const adapterDB = new MemoryDB()
     // Aseguramos que 'paymentFlow' esté en la lista de flujos.
-    const adapterFlow = createFlow([mainFlow, salesFlow, pricesFlow, gamesFlow, paymentFlow]) 
+    const adapterFlow = createFlow([mainFlow, salesFlow, pricesFlow, gamesFlow, paymentFlow, gamePaymentFlow, zinliPaymentFlow]) 
     const adapterProvider = createProvider(BaileysProvider)
 
     const { httpServer } = await createBot({
