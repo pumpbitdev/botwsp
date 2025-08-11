@@ -3,19 +3,19 @@ import { addKeyword } from '@builderbot/bot';
 import { processPaymentImage } from '../../services/image.service.js';
 
 // LA CORRECCIÓN: Iniciamos el flujo con addKeyword([]) para hacerlo encadenable
-const gamePaymentFlow = addKeyword([], { sensitive: true })
+const zinliPaymentFlow = addKeyword([], { sensitive: true })
     .addAnswer(
-        '¡Excelente! 👍 Para continuar, por favor, envíame el ID de tu cuenta de juego.',
+        '¡Excelente! 👍 Para continuar, por favor, envíame tu nombre completo.',
         { capture: true },
         async (ctx, { state }) => {
-            await state.update({ gameId: ctx.body });
+            await state.update({ fullName: ctx.body });
         }
     )
     .addAnswer(
-        '¡Perfecto! Ahora, por favor, dime tu nombre de usuario en el juego (tal cual como aparece).',
+        '¡Perfecto! Ahora, por favor, dime tu correo electrónico asociado a Zinli.',
         { capture: true },
         async (ctx, { state }) => {
-            await state.update({ playerName: ctx.body });
+            await state.update({ email: ctx.body });
         }
     )
     .addAnswer(
@@ -31,9 +31,9 @@ const gamePaymentFlow = addKeyword([], { sensitive: true })
                 const imagePath = await provider.saveFile(ctx, { path: './media' });
                 const result = await processPaymentImage(imagePath);
                 if (result.success) {
-                    const playerName = state.get('playerName');
-                    const gameId = state.get('gameId');
-                    const finalMessage = `¡Verificación exitosa! ✨\n\n*Recarga de Juego:*\n*Jugador:* ${playerName}\n*ID de Juego:* ${gameId}\n*Referencia:* ${result.referenceId}\n\nEn breve procesaremos tu recarga.`;
+                    const fullName = state.get('fullName');
+                    const email = state.get('email');
+                    const finalMessage = `¡Verificación exitosa! ✨\n\n*Recarga de Divisa:*\n*Nombre:* ${fullName}\n*Correo:* ${email}\n*Referencia:* ${result.referenceId}\n\nEn breve procesaremos tu recarga.`;
                     await flowDynamic(finalMessage);
                     return endFlow();
                 } else {
@@ -41,11 +41,11 @@ const gamePaymentFlow = addKeyword([], { sensitive: true })
                     return fallBack();
                 }
             } catch (error) {
-                console.error("Error en gamePaymentFlow:", error);
+                console.error("Error en zinliPaymentFlow:", error);
                 await flowDynamic("Uups, algo salió mal. Contacta a soporte.");
                 return endFlow();
             }
         }
     );
 
-export default gamePaymentFlow;
+export default zinliPaymentFlow;
