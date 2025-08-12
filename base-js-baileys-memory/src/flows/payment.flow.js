@@ -2,7 +2,7 @@ import { addKeyword } from '@builderbot/bot';
 import { processPaymentImage } from '../services/image.service.js';
 
 const paymentFlow = addKeyword(['confirmo', 'confirmar'], { sensitive: true })
-    // --- PASO 1: Elegir el tipo de recarga ---
+    // --- PASO 1: Preguntar y capturar el tipo de recarga ---
     .addAnswer(
         [
             '¡Perfecto! Vamos a confirmar tu pago.',
@@ -11,7 +11,7 @@ const paymentFlow = addKeyword(['confirmo', 'confirmar'], { sensitive: true })
             '2. 👉 Recarga de *Divisas* (Zinli)'
         ],
         { capture: true },
-        async (ctx, { state, fallBack }) => {
+        async (ctx, { state, fallBack, flowDynamic }) => {
             const userChoice = ctx.body.toLowerCase();
             let paymentType = null;
 
@@ -23,28 +23,20 @@ const paymentFlow = addKeyword(['confirmo', 'confirmar'], { sensitive: true })
                 return fallBack('No entendí esa opción. Por favor, responde "juegos" o "divisas".');
             }
 
-            // Guardamos el tipo de pago en el "carrito" del flujo.
-            // Esta es la clave para la lógica condicional.
+            // Guardamos el tipo de pago en el state para los siguientes pasos.
             await state.update({ paymentType });
-        }
-    )
-    // --- PASO 2: Pedir el primer dato (condicional) ---
-    .addAnswer(
-        '¡Entendido!',
-        null,
-        async (ctx, { state, flowDynamic }) => {
-            const paymentType = state.get('paymentType');
-            // Dependiendo del tipo de pago, hacemos una pregunta diferente.
+
+            // Hacemos la siguiente pregunta DINÁMICAMENTE.
             if (paymentType === 'game') {
-                await flowDynamic('Por favor, envíame el ID de tu cuenta de juego.');
-            } else if (paymentType === 'exchange') {
-                await flowDynamic('Por favor, envíame tu nombre completo.');
+                await flowDynamic('¡Entendido! Por favor, envíame el ID de tu cuenta de juego.');
+            } else { // 'exchange'
+                await flowDynamic('¡Entendido! Por favor, envíame tu nombre completo.');
             }
         }
     )
-    // --- PASO 3: Capturar el primer dato y pedir el segundo ---
+    // --- PASO 2: Capturar el primer dato y pedir el segundo ---
     .addAnswer(
-        { capture: true }, // Este addAnswer está "vacío" de texto, solo captura.
+        { capture: true }, // Este paso solo captura la respuesta a la pregunta anterior.
         async (ctx, { state, flowDynamic }) => {
             const paymentType = state.get('paymentType');
             const data1 = ctx.body;
@@ -52,13 +44,13 @@ const paymentFlow = addKeyword(['confirmo', 'confirmar'], { sensitive: true })
             if (paymentType === 'game') {
                 await state.update({ gameId: data1 });
                 await flowDynamic('¡Perfecto! Ahora, por favor, dime tu nombre de usuario en el juego.');
-            } else if (paymentType === 'exchange') {
+            } else { // 'exchange'
                 await state.update({ fullName: data1 });
                 await flowDynamic('¡Entendido! Ahora, por favor, dime tu correo electrónico.');
             }
         }
     )
-    // --- PASO 4: Capturar el segundo dato y pedir la imagen ---
+    // --- PASO 3: Capturar el segundo dato y pedir la imagen ---
     .addAnswer(
         { capture: true },
         async (ctx, { state, flowDynamic }) => {
@@ -67,13 +59,13 @@ const paymentFlow = addKeyword(['confirmo', 'confirmar'], { sensitive: true })
 
             if (paymentType === 'game') {
                 await state.update({ playerName: data2 });
-            } else if (paymentType === 'exchange') {
+            } else { // 'exchange'
                 await state.update({ email: data2 });
             }
             await flowDynamic('¡Gracias! Ya tengo todos tus datos. Por favor, envía ahora la captura de tu pago para verificarla.');
         }
     )
-    // --- PASO 5: Capturar y procesar la imagen ---
+    // --- PASO 4: Capturar y procesar la imagen ---
     .addAnswer(
         { capture: true },
         async (ctx, { state, provider, flowDynamic, fallBack, endFlow }) => {
@@ -92,7 +84,7 @@ const paymentFlow = addKeyword(['confirmo', 'confirmar'], { sensitive: true })
                         const playerName = state.get('playerName');
                         const gameId = state.get('gameId');
                         finalMessage += `*Recarga de Juego:*\n*Jugador:* ${playerName}\n*ID de Juego:* ${gameId}\n*Referencia:* ${result.referenceId}\n\nEn breve procesaremos tu recarga.`;
-                    } else { // paymentType === 'exchange'
+                    } else { // 'exchange'
                         const fullName = state.get('fullName');
                         const email = state.get('email');
                         finalMessage += `*Recarga de Divisa:*\n*Nombre:* ${fullName}\n*Correo:* ${email}\n*Referencia:* ${result.referenceId}\n\nEn breve procesaremos tu recarga.`;
