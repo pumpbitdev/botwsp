@@ -4,17 +4,21 @@ import 'dotenv/config'
 
 import mainFlow from './flows/main.flow.js'
 import { salesFlow, pricesFlow } from './flows/sales.flow.js'
-import paymentFlow from './flows/payment/payment.flow.js'
+import paymentFlow from './flows/payment.flow.js' // Corregimos la ruta
 import gamesFlow from './flows/catalogo.flow.js'
-import gamePaymentFlow from './flows/payment/gamePayment.flow.js';
-import zinliPaymentFlow from './flows/payment/ExchangePayment.flow.js';
 
 const PORT = process.env.PORT ?? 3002
 
 const main = async () => {
     const adapterDB = new MemoryDB()
-    // Aseguramos que 'paymentFlow' esté en la lista de flujos.
-    const adapterFlow = createFlow([mainFlow, salesFlow, pricesFlow, gamesFlow, paymentFlow, gamePaymentFlow, zinliPaymentFlow]) 
+    // Dejamos solo los flujos que realmente existen ahora
+    const adapterFlow = createFlow([
+        mainFlow, 
+        salesFlow, 
+        pricesFlow, 
+        gamesFlow, 
+        paymentFlow // El único flujo de pago necesario
+    ]) 
     const adapterProvider = createProvider(BaileysProvider)
 
     const { httpServer } = await createBot({

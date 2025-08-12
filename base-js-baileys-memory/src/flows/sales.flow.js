@@ -1,7 +1,7 @@
 import { addKeyword } from '@builderbot/bot';
 import { getResponse } from '../services/ai.service.js';
 import { PROMPT_SALES } from '../prompts/prompts.js';
-import paymentFlow from './payment/payment.flow.js';
+import paymentFlow from './payment.flow.js';
 
 const salesFlow = addKeyword(['recargas', 'recargar'])
     .addAnswer(
