@@ -3,16 +3,25 @@ import { processPaymentImage } from '../services/image.service.js';
 
 const paymentFlow = addKeyword(['confirmo', 'confirmar'], { sensitive: true })
     .addAnswer(
-        '¡Perfecto! Vamos a confirmar tu pago.\nPor favor, dime qué tipo de recarga estás pagando:\n\n1. 👉 Recarga de *Juegos*\n2. 👉 Recarga de *Divisas* (Zinli)',
+        // LA CORRECCIÓN: El mensaje inicial se elimina de aquí.
+        // Ahora este bloque solo sirve para capturar y procesar.
+        null,
         { capture: true },
         async (ctx, { state, flowDynamic, fallBack, endFlow, provider }) => {
             
-            // Obtenemos el paso actual del state, si no existe, es el 'paso_inicial'.
-            const currentStep = state.get('step') || 'paso_inicial';
+            const currentStep = state.get('step');
 
+            // --- Si es la primera vez en el flujo, enviamos el mensaje de bienvenida ---
+            if (!currentStep) {
+                await flowDynamic('¡Perfecto! Vamos a confirmar tu pago.\nPor favor, dime qué tipo de recarga estás pagando:\n\n1. 👉 Recarga de *Juegos*\n2. 👉 Recarga de *Divisas* (Zinli)');
+                await state.update({ step: 'awaiting_choice' });
+                // Usamos return para esperar la respuesta del usuario sin hacer nada más.
+                return;
+            }
+
+            // --- A partir de aquí, manejamos los diferentes pasos de la conversación ---
             switch (currentStep) {
-                // --- Caso 1: El usuario elige el tipo de pago ---
-                case 'paso_inicial':
+                case 'awaiting_choice':
                     const userChoice = ctx.body.toLowerCase();
                     let paymentType = null;
 
@@ -21,48 +30,44 @@ const paymentFlow = addKeyword(['confirmo', 'confirmar'], { sensitive: true })
                     } else if (userChoice.includes('divisa') || userChoice.includes('zinli')) {
                         paymentType = 'exchange';
                     } else {
-                        return fallBack('No entendí esa opción. Por favor, responde "juegos" o "divisas".');
+                        // Si no entendemos, repetimos la pregunta sin cambiar de paso.
+                        await flowDynamic('No entendí esa opción. Por favor, responde "juegos" o "divisas".');
+                        return fallBack();
                     }
                     
-                    // Actualizamos el state con la elección y el siguiente paso.
-                    await state.update({ paymentType, step: 'obtener_dato_1' });
+                    await state.update({ paymentType, step: 'awaiting_data_1' });
 
-                    // Hacemos la siguiente pregunta.
                     if (paymentType === 'game') {
                         await flowDynamic('¡Entendido! Por favor, envíame el ID de tu cuenta de juego.');
                     } else { // exchange
                         await flowDynamic('¡Entendido! Por favor, envíame tu nombre completo.');
                     }
-                    // Usamos fallBack() para quedarnos en este mismo bloque .addAnswer y esperar la respuesta.
                     return fallBack();
 
-                // --- Caso 2: El usuario envía el primer dato (ID o Nombre) ---
-                case 'obtener_dato_1':
+                case 'awaiting_data_1':
                     const data1 = ctx.body;
                     const pt1 = state.get('paymentType');
 
                     if (pt1 === 'game') {
-                        await state.update({ gameId: data1, step: 'obtener_dato_2' });
+                        await state.update({ gameId: data1, step: 'awaiting_data_2' });
                         await flowDynamic('¡Perfecto! Ahora, por favor, dime tu nombre de usuario en el juego.');
                     } else { // exchange
-                        await state.update({ fullName: data1, step: 'obtener_dato_2' });
+                        await state.update({ fullName: data1, step: 'awaiting_data_2' });
                         await flowDynamic('¡Entendido! Ahora, por favor, dime tu correo electrónico.');
                     }
                     return fallBack();
 
-                // --- Caso 3: El usuario envía el segundo dato (Username o Email) ---
-                case 'obtener_dato_2':
+                case 'awaiting_data_2':
                     const data2 = ctx.body;
                     await state.update(
                         state.get('paymentType') === 'game' 
-                            ? { playerName: data2, step: 'obtener_imagen' }
-                            : { email: data2, step: 'obtener_imagen' }
+                            ? { playerName: data2, step: 'awaiting_image' }
+                            : { email: data2, step: 'awaiting_image' }
                     );
                     await flowDynamic('¡Gracias! Ya tengo todos tus datos. Por favor, envía ahora la captura de tu pago para verificarla.');
                     return fallBack();
 
-                // --- Caso 4: El usuario envía la imagen ---
-                case 'obtener_imagen':
+                case 'awaiting_image':
                     if (!ctx.message?.imageMessage) {
                         return fallBack('Eso no parece una imagen. Por favor, envía la captura para continuar.');
                     }
